@@ -39,10 +39,13 @@ public class UserServiceImp implements UserService {
         return userRepository.findAllWithRoles();
     }
 
+    @Transactional
     @Override
-    public Optional<User> getUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        user.ifPresent(u -> Hibernate.initialize(u.getRoles())); // ← принудительная инициализация
+    public User getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Hibernate.initialize(user.getRoles());
         return user;
     }
 

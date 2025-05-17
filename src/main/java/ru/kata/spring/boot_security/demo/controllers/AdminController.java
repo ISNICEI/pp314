@@ -36,10 +36,8 @@ public class AdminController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> showUser(@PathVariable long id) {
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public User showUser(@PathVariable long id) {
+        return userService.getUserById(id);
     }
 
     @GetMapping("/users/roles")

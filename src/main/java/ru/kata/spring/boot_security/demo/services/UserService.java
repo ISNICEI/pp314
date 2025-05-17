@@ -13,7 +13,7 @@ public interface UserService {
 
     void save(User user, Set<Role> roles);
 
-    Optional<User> getUserById(Long id);
+    User getUserById(Long id);
 
     void update(User user, Set<Role> roles, Long id);
 
