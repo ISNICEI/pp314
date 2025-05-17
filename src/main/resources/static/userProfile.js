@@ -1,7 +1,7 @@
 // --- Получение данных о текущем пользователе и настройка элементов навигации на основе его ролей ---
 document.addEventListener("DOMContentLoaded", function () {
     // Запрос данных о пользователе через API
-    fetch('user/profile_user')
+    fetch('user/profile')
         .then(response => response.json())
         .then(user => {
             // Отображение полей в таблице пользователя

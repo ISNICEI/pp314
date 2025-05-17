@@ -1,7 +1,9 @@
 package ru.kata.spring.boot_security.demo.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,7 +56,7 @@ public class User implements UserDetails {
   @Column(unique = true)
   private String username;
 
-  @JsonManagedReference
+
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "user_roles",
           joinColumns = @JoinColumn(name = "user_id"),
@@ -170,6 +172,7 @@ public class User implements UserDetails {
     return true;
   }
 
+
   @Override
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) return false;
@@ -201,8 +204,7 @@ public class User implements UserDetails {
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
             ", password='" + password + '\'' +
-            ", username='" + username + '\'' +
-            ", roles=" + roles +
+            ", username='" + username + '\''  +
             '}';
   }
 }

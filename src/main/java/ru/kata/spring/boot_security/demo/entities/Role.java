@@ -21,10 +21,10 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "role", unique = true)
+    @Column(name = "role", unique = true, nullable = false)
     private String name;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
