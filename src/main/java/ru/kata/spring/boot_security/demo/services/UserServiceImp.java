@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.services;
 
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,7 +41,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+        Optional<User> user = userRepository.findById(id);
+        user.ifPresent(u -> Hibernate.initialize(u.getRoles())); // ← принудительная инициализация
+        return user;
     }
 
     @Override
@@ -62,6 +65,8 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public void delete(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        Hibernate.initialize(user.getRoles());
         userRepository.deleteById(id);
     }
 
@@ -75,12 +80,16 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.isAuthenticated()) {
+        if (authentication != null && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails userDetails) {
-                return (User) userDetails;
+                String username = userDetails.getUsername();
+                User user = userRepository.findByUsernameWithRoles(username);
+                Hibernate.initialize(user.getRoles());
+                return user;
             }
         }
         throw new IllegalStateException("No authenticated user found");
