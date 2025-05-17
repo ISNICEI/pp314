@@ -1,10 +1,11 @@
-// ---------------------- Обработчик отправки формы создания нового пользователя ----------------------
 document.getElementById('new-user-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
     const formData = new FormData(this);
+
     const rolesSelected = Array.from(document.getElementById('roles').selectedOptions).map(option => ({
-        id: parseInt(option.value, 10)
+        id: parseInt(option.value, 10),
+        name: option.textContent.trim() // или через data-name, как выше
     }));
 
     const user = {
@@ -16,7 +17,7 @@ document.getElementById('new-user-form').addEventListener('submit', function (ev
         roles: rolesSelected
     };
 
-    console.log('Creating user:', user);
+    console.log('Отправляем:', JSON.stringify(user));
 
     fetch('/admin/new', {
         method: 'POST',
@@ -30,15 +31,11 @@ document.getElementById('new-user-form').addEventListener('submit', function (ev
                 fetchUsers();
                 this.reset();
                 closeModal('newUserPopup');
-                // Переключение на вкладку "Users table"
                 const tabTrigger = new bootstrap.Tab(document.querySelector('#nav-home-tab'));
                 tabTrigger.show();
             } else {
                 return response.json().then(errors => {
-                    // Очистка предыдущих сообщений об ошибках
                     document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
-
-                    // Отображение новых сообщений об ошибках
                     Object.keys(errors).forEach(field => {
                         const errorElement = document.getElementById(field + '-error');
                         if (errorElement) {
@@ -52,8 +49,4 @@ document.getElementById('new-user-form').addEventListener('submit', function (ev
         .catch(error => {
             console.error('Error creating user:', error);
         });
-});
-// Очистка сообщений об ошибках валидации
-document.querySelector('#nav-home-tab').addEventListener('shown.bs.tab', function (event) {
-    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
 });

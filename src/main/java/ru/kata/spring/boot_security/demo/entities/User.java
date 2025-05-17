@@ -21,6 +21,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Objects;
@@ -48,7 +49,7 @@ public class User implements UserDetails {
   @Email
   private String email;
 
-  @NotBlank(message = "Пароль не может быть пустым")
+  @NotEmpty(message = "Пароль не может быть пустым")
   @Column(name = "password")
   private String password;
 
@@ -171,7 +172,6 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
 
   @Override
   public boolean equals(Object o) {
