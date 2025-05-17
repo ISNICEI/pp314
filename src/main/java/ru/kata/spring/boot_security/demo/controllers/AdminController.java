@@ -32,7 +32,7 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public List<User> showUsersList() {
+    public List<User> getAllUsers() {
         return userService.listUsers();
     }
 
@@ -42,7 +42,7 @@ public class AdminController {
     }
 
     @GetMapping("/users/roles")
-    public List<Role> showRolesList(ModelMap model) {
+    public List<Role> showRolesList() {
         return roleService.listRoles();
     }
 
