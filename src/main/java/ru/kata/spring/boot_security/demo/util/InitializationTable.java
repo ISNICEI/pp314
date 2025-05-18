@@ -29,6 +29,7 @@ public class InitializationTable {
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
+
     @PostConstruct
     public void initializationTable() {
         String passwordAdmin = passwordEncoder.encode("admin");
@@ -64,4 +65,4 @@ public class InitializationTable {
         userRepository.save(user);
     }
 
-   }
+}

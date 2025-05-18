@@ -24,6 +24,6 @@ const api = {
         });
     },
     deleteUser(id) {
-        return fetch(`/admin/delete/${id}`, { method: 'DELETE' });
+        return fetch(`/admin/delete/${id}`, {method: 'DELETE'});
     }
 };
